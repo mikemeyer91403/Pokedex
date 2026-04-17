@@ -9,11 +9,11 @@ describe.each([
   },
   {
     input: "  Your  mom  ",
-    expected: ["Your", "mom"],
+    expected: ["your", "mom"],
   },
   {
     input: "  Love is Love  ",
-    expected: ["Love", "is", "Love"],
+    expected: ["love", "is", "love"],
   },
   // TODO: more test cases here
 ])("cleanInput($input)", ({ input, expected }) => {
