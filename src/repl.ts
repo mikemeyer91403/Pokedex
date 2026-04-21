@@ -1,6 +1,7 @@
 
 
 import { createInterface } from "readline";
+import { getCommands } from "./command_registry.js"
 export function cleanInput(input: string): string[] {
   // logic goes here
 
@@ -14,6 +15,8 @@ export function cleanInput(input: string): string[] {
 }
 
 
+
+
 export function startREPL() {
  const rl = createInterface( {
    input: process.stdin,
@@ -21,16 +24,31 @@ export function startREPL() {
    prompt: "MikePokedex > ",
  });
 rl.prompt();
+const commands = getCommands();
 
 rl.on('line', (input: string) => {
   const words = cleanInput(input);
   if (words.length == 0){
     rl.prompt();
+    return;
   }
-  else {
-    console.log(`Your command was: ${words[0]}`);
+  const cmdName = words[0];
+  const commands = getCommands();
+  const cmd = commands[cmdName];
+  if (!cmd) {
+    console.log(`Unknown command: "${cmdName}". Type help for a list of commands.`);
     rl.prompt();
+    return;
   }
+  try {
+    cmd.callback(commands);
+  } catch (e) {
+    console.log(e);
+  } 
+
+  rl.prompt();
+  
 });
+
 
 }
